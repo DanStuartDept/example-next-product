@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit",
     "release": "semantic-release",
     "release:dry-run": "semantic-release --dry-run",
-    "test": "vitest run",
+    "test": "vitest run --coverage",
     "test:watch": "vitest",
     "test:ci": "vitest run --coverage --reporter=junit"
   },

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { NumberedList } from "@/components/numbered-list";
 
 export default function Home() {
   return (
@@ -15,20 +16,14 @@ export default function Home() {
         <h1 className="text-2xl font-bold">
           Example Next.js Product (GitHub)
         </h1>
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Implement GitHub Actions for automated testing, building and deployment of Next.js applications.
-          </li>
-          <li className="mb-2 tracking-[-.01em]">
-            Configure semantic versioning with automated changelog generation from commit messages.
-          </li>
-          <li className="mb-2 tracking-[-.01em]">
-            Integrate Storybook for component development and documentation.
-          </li>
-          <li className="tracking-[-.01em]">
-            Set up comprehensive testing with unit tests and end-to-end (e2e) testing.
-          </li>
-        </ol>
+        <NumberedList 
+          items={[
+            "Implement GitHub Actions for automated testing, building and deployment of Next.js applications.",
+            "Configure semantic versioning with automated changelog generation from commit messages.",
+            "Integrate Storybook for component development and documentation.",
+            "Set up comprehensive testing with unit tests and end-to-end (e2e) testing."
+          ]}
+        />
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <a
             className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
