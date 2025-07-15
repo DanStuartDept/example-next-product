@@ -36,6 +36,8 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm i
+      - name: Build application
+        run: pnpm build
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
