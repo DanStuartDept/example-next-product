@@ -25,8 +25,11 @@ jobs:
         with:
           node-version: 20
           cache: 'pnpm'
+          cache-dependency-path: '**/pnpm-lock.yaml'
       - name: Install dependencies
         run: pnpm i
+      - name: Type check
+        run: pnpm typecheck
       - run: pnpm test:ci
       - uses: actions/upload-artifact@v4
         with:
