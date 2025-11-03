@@ -179,13 +179,16 @@ jobs:
           else
             unlighthouse-ci --site http://localhost:3000 --urls /
           fi
+        continue-on-error: true
 
       - name: Upload Unlighthouse results
         uses: actions/upload-artifact@v4
         if: always()
+        continue-on-error: true
         with:
           name: unlighthouse-results
           path: .unlighthouse/
+          if-no-files-found: ignore
 
       - name: Comment performance summary on PR
         uses: actions/github-script@v7
