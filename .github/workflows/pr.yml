@@ -228,9 +228,16 @@ jobs:
             comment += '| URL | Performance | Accessibility | Best Practices | SEO |\n';
             comment += '|-----|-------------|---------------|----------------|-----|\n';
             
-            for (const [url, data] of Object.entries(results)) {
-              const scores = data.report?.categories || {};
-              comment += `| ${url} | ${scores.performance?.score || 'N/A'} | ${scores.accessibility?.score || 'N/A'} | ${scores['best-practices']?.score || 'N/A'} | ${scores.seo?.score || 'N/A'} |\n`;
+            // Handle both array and object formats
+            const resultsArray = Array.isArray(results) ? results : Object.values(results);
+            
+            for (const data of resultsArray) {
+              const url = data.path || data.url || 'Unknown';
+              const perf = data.performance !== undefined ? Math.round(data.performance * 100) : 'N/A';
+              const a11y = data.accessibility !== undefined ? Math.round(data.accessibility * 100) : 'N/A';
+              const bp = data['best-practices'] !== undefined ? Math.round(data['best-practices'] * 100) : 'N/A';
+              const seo = data.seo !== undefined ? Math.round(data.seo * 100) : 'N/A';
+              comment += `| ${url} | ${perf} | ${a11y} | ${bp} | ${seo} |\n`;
             }
             
             await github.rest.issues.createComment({
