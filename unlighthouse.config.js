@@ -20,6 +20,8 @@ export default {
   ci: {
     budget: {
       // Set minimum scores for CI to pass
+      // Note: Performance threshold set conservatively to 50 initially
+      // Adjust upward (e.g., 70-80) once baseline performance is established
       performance: 50,
       accessibility: 80,
       'best-practices': 80,
