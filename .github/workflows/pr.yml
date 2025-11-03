@@ -101,6 +101,8 @@ jobs:
         env:
           # Skip telemetry during CI builds
           NEXT_TELEMETRY_DISABLED: 1
+          # Mark as CI environment to skip font optimization
+          CI: true
 
   performance:
     name: Performance Check (Unlighthouse)
@@ -125,6 +127,7 @@ jobs:
         run: npm run build
         env:
           NEXT_TELEMETRY_DISABLED: 1
+          CI: true
 
       - name: Start application
         run: npm start &
@@ -138,7 +141,7 @@ jobs:
 
       - name: Run Unlighthouse
         run: |
-          if [ -f "unlighthouse.config.ts" ]; then
+          if [ -f "unlighthouse.config.js" ] || [ -f "unlighthouse.config.ts" ]; then
             unlighthouse-ci --site http://localhost:3000
           else
             unlighthouse-ci --site http://localhost:3000 --urls /

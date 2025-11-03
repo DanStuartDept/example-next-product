@@ -1,6 +1,7 @@
-import { defineConfig } from 'unlighthouse'
+// Unlighthouse configuration for performance testing
+// This file allows configuring which paths to check for performance
 
-export default defineConfig({
+export default {
   site: process.env.UNLIGHTHOUSE_SITE || 'http://localhost:3000',
   scanner: {
     // Configure the paths to check
@@ -26,4 +27,4 @@ export default defineConfig({
     },
   },
   debug: false,
-})
+}
