@@ -206,6 +206,7 @@ jobs:
           name: unlighthouse-results
           path: .unlighthouse/
           if-no-files-found: ignore
+          include-hidden-files: true
 
       - name: Comment performance summary on PR
         uses: actions/github-script@v7
