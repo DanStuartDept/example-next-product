@@ -11,7 +11,7 @@ export default defineConfig({
     coverage: {
       include: ['src/**/*'],
       exclude: ['src/**/*.stories.{js,jsx,ts,tsx}', '**/*.d.ts', '**/*.css'],
-      reporter: ['clover'],
+      reporter: ['text', 'lcov', 'clover', 'json'],
       reportsDirectory: './coverage',
     },
     environment: 'jsdom',
