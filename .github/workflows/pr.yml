@@ -6,10 +6,17 @@ on:
       - main
       - develop
 
+# Set default permissions for all jobs
+permissions:
+  contents: read
+
 jobs:
   test:
     name: Tests
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write  # For commenting coverage on PRs
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -45,6 +52,8 @@ jobs:
   lint:
     name: Linting
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -64,6 +73,8 @@ jobs:
   typecheck:
     name: Type Check
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -83,6 +94,8 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -107,6 +120,9 @@ jobs:
   performance:
     name: Performance Check (Unlighthouse)
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write  # For commenting performance results on PRs
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
