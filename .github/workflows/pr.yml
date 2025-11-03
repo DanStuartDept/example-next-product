@@ -181,6 +181,23 @@ jobs:
           fi
         continue-on-error: true
 
+      - name: Verify Unlighthouse results
+        run: |
+          if [ -f ".unlighthouse/ci-result.json" ]; then
+            echo "✓ Unlighthouse ci-result.json file found"
+            ls -lh .unlighthouse/ci-result.json
+            echo "File contents preview:"
+            head -20 .unlighthouse/ci-result.json
+          else
+            echo "✗ Warning: .unlighthouse/ci-result.json not found"
+            echo "Checking .unlighthouse directory:"
+            if [ -d ".unlighthouse" ]; then
+              ls -la .unlighthouse/
+            else
+              echo ".unlighthouse directory does not exist"
+            fi
+          fi
+
       - name: Upload Unlighthouse results
         uses: actions/upload-artifact@v4
         if: always()
