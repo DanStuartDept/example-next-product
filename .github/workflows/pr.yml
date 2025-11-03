@@ -38,14 +38,6 @@ jobs:
       - name: Run tests with coverage
         run: pnpm run test
 
-      - name: Upload coverage reports
-        uses: codecov/codecov-action@v5
-        if: always()
-        with:
-          files: ./coverage/coverage-final.json
-          fail_ci_if_error: false
-          token: ${{ secrets.CODECOV_TOKEN }}
-
       - name: Comment coverage on PR
         uses: romeovs/lcov-reporter-action@v0.3.1
         if: github.event_name == 'pull_request'
@@ -139,6 +131,7 @@ jobs:
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
+        if: success()
         with:
           name: next-build
           path: .next/
