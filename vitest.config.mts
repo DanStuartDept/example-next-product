@@ -10,7 +10,7 @@ export default defineConfig({
     outputFile: './test-results/junit.xml',
     coverage: {
       include: ['src/**/*'],
-      exclude: ['src/**/*.stories.{js,jsx,ts,tsx}', '**/*.d.ts'],
+      exclude: ['src/**/*.stories.{js,jsx,ts,tsx}', '**/*.d.ts', '**/*.css'],
       reporter: ['clover'],
       reportsDirectory: './coverage',
     },
