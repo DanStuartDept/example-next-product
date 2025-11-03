@@ -129,12 +129,23 @@ jobs:
           # Mark as CI environment to skip font optimization
           CI: true
 
+      - name: Verify build output
+        run: |
+          if [ ! -d ".next" ]; then
+            echo "Error: .next directory not found after build"
+            exit 1
+          fi
+          echo "Build output verified: .next directory exists"
+          ls -la .next/ | head -10
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         if: success()
         with:
           name: next-build
-          path: .next/
+          path: |
+            .next/**
+            !.next/cache
           retention-days: 1
 
   performance:
@@ -167,6 +178,15 @@ jobs:
         with:
           name: next-build
           path: .next/
+
+      - name: Verify downloaded artifact
+        run: |
+          if [ ! -d ".next" ]; then
+            echo "Error: .next directory not found after artifact download"
+            exit 1
+          fi
+          echo "Artifact verified: .next directory exists"
+          ls -la .next/ | head -10
 
       - name: Install Unlighthouse
         run: pnpm add -g @unlighthouse/cli puppeteer
