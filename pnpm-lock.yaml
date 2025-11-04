@@ -36,9 +36,6 @@ importers:
       '@storybook/addon-docs':
         specifier: ^10.0.3
         version: 10.0.3(@types/react@19.2.2)(esbuild@0.25.12)(rollup@4.52.5)(storybook@10.0.3(@testing-library/dom@10.4.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(vite@7.1.12(@types/node@24.10.0)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.0)))(vite@7.1.12(@types/node@24.10.0)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.0))(webpack@5.102.1(esbuild@0.25.12))
-      '@storybook/addon-onboarding':
-        specifier: ^10.0.3
-        version: 10.0.3(storybook@10.0.3(@testing-library/dom@10.4.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(vite@7.1.12(@types/node@24.10.0)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.0)))
       '@storybook/nextjs':
         specifier: ^10.0.3
         version: 10.0.3(esbuild@0.25.12)(next@15.5.6(@babel/core@7.28.5)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(storybook@10.0.3(@testing-library/dom@10.4.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(vite@7.1.12(@types/node@24.10.0)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.0)))(type-fest@4.41.0)(typescript@5.9.3)(webpack-hot-middleware@2.26.1)(webpack@5.102.1(esbuild@0.25.12))
@@ -1504,11 +1501,6 @@ packages:
 
   '@storybook/addon-docs@10.0.3':
     resolution: {integrity: sha512-S0gD+VcKb4Rn7nPFyH2RY642Wm7BiPUGOJxpOACylbyrqDZoa8WhO3fLW0SdqKbjHIuQiZ8917Rqxj1t/97nVQ==}
-    peerDependencies:
-      storybook: ^10.0.3
-
-  '@storybook/addon-onboarding@10.0.3':
-    resolution: {integrity: sha512-G3nXRP4MOSPLFQUrgdqkL4z19YSJsuo8LbyFTjobTk6idj1w7A/cdWaiBOOXwcMTln5K091S7XXDeXkblHb98Q==}
     peerDependencies:
       storybook: ^10.0.3
 
@@ -7063,10 +7055,6 @@ snapshots:
       - rollup
       - vite
       - webpack
-
-  '@storybook/addon-onboarding@10.0.3(storybook@10.0.3(@testing-library/dom@10.4.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(vite@7.1.12(@types/node@24.10.0)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.0)))':
-    dependencies:
-      storybook: 10.0.3(@testing-library/dom@10.4.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(vite@7.1.12(@types/node@24.10.0)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.0))
 
   '@storybook/builder-webpack5@10.0.3(esbuild@0.25.12)(storybook@10.0.3(@testing-library/dom@10.4.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(vite@7.1.12(@types/node@24.10.0)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.0)))(typescript@5.9.3)':
     dependencies:
