@@ -130,7 +130,7 @@ jobs:
           CI: true
 
   performance:
-    name: Performance Check (Unlighthouse)
+    name: Performance Check (Lighthouse CI)
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -159,8 +159,8 @@ jobs:
           NEXT_TELEMETRY_DISABLED: 1
           CI: true
 
-      - name: Install Unlighthouse
-        run: pnpm add -g @unlighthouse/cli puppeteer
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli@0.15.x
 
       - name: Start application
         run: pnpm start &
@@ -172,41 +172,19 @@ jobs:
           echo "Waiting for application to start..."
           timeout 60 bash -c 'until curl -f http://localhost:3000 > /dev/null 2>&1; do sleep 2; done'
 
-      - name: Run Unlighthouse
+      - name: Run Lighthouse CI
         run: |
-          if [ -f "unlighthouse.config.js" ] || [ -f "unlighthouse.config.ts" ]; then
-            unlighthouse-ci --site http://localhost:3000
-          else
-            unlighthouse-ci --site http://localhost:3000 --urls /
-          fi
+          lhci autorun --collect.url=http://localhost:3000 --collect.numberOfRuns=1 || echo "Lighthouse CI completed with warnings"
         continue-on-error: true
 
-      - name: Verify Unlighthouse results
-        run: |
-          if [ -f ".unlighthouse/ci-result.json" ]; then
-            echo "✓ Unlighthouse ci-result.json file found"
-            ls -lh .unlighthouse/ci-result.json
-            echo "File contents preview:"
-            head -20 .unlighthouse/ci-result.json
-          else
-            echo "✗ Warning: .unlighthouse/ci-result.json not found"
-            echo "Checking .unlighthouse directory:"
-            if [ -d ".unlighthouse" ]; then
-              ls -la .unlighthouse/
-            else
-              echo ".unlighthouse directory does not exist"
-            fi
-          fi
-
-      - name: Upload Unlighthouse results
+      - name: Upload Lighthouse results
         uses: actions/upload-artifact@v4
         if: always()
         continue-on-error: true
         with:
-          name: unlighthouse-results
-          path: .unlighthouse/
+          name: lighthouse-results
+          path: .lighthouseci/
           if-no-files-found: ignore
-          include-hidden-files: true
 
       - name: Comment performance summary on PR
         uses: actions/github-script@v7
@@ -215,28 +193,43 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const fs = require('fs');
-            const path = '.unlighthouse/ci-result.json';
+            const path = require('path');
             
-            if (!fs.existsSync(path)) {
-              console.log('No Unlighthouse results found');
+            // Find the most recent manifest file
+            const lighthouseDir = '.lighthouseci';
+            if (!fs.existsSync(lighthouseDir)) {
+              console.log('No Lighthouse results found');
               return;
             }
             
-            const results = JSON.parse(fs.readFileSync(path, 'utf8'));
+            const files = fs.readdirSync(lighthouseDir);
+            const manifestFiles = files.filter(f => f.startsWith('manifest') && f.endsWith('.json'));
             
-            let comment = '## 🚀 Performance Check Results\n\n';
+            if (manifestFiles.length === 0) {
+              console.log('No Lighthouse manifest found');
+              return;
+            }
+            
+            const manifestPath = path.join(lighthouseDir, manifestFiles[0]);
+            const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+            
+            let comment = '## 🚀 Lighthouse Performance Results\n\n';
             comment += '| URL | Performance | Accessibility | Best Practices | SEO |\n';
             comment += '|-----|-------------|---------------|----------------|-----|\n';
             
-            // Handle both array and object formats
-            const resultsArray = Array.isArray(results) ? results : Object.values(results);
-            
-            for (const data of resultsArray) {
-              const url = data.path || data.url || 'Unknown';
-              const perf = data.performance !== undefined ? Math.round(data.performance * 100) : 'N/A';
-              const a11y = data.accessibility !== undefined ? Math.round(data.accessibility * 100) : 'N/A';
-              const bp = data['best-practices'] !== undefined ? Math.round(data['best-practices'] * 100) : 'N/A';
-              const seo = data.seo !== undefined ? Math.round(data.seo * 100) : 'N/A';
+            for (const result of manifest) {
+              const reportPath = path.join(lighthouseDir, result.jsonPath);
+              if (!fs.existsSync(reportPath)) continue;
+              
+              const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+              const url = result.url || report.finalUrl || 'Unknown';
+              const categories = report.categories || {};
+              
+              const perf = categories.performance ? Math.round(categories.performance.score * 100) : 'N/A';
+              const a11y = categories.accessibility ? Math.round(categories.accessibility.score * 100) : 'N/A';
+              const bp = categories['best-practices'] ? Math.round(categories['best-practices'].score * 100) : 'N/A';
+              const seo = categories.seo ? Math.round(categories.seo.score * 100) : 'N/A';
+              
               comment += `| ${url} | ${perf} | ${a11y} | ${bp} | ${seo} |\n`;
             }
             
