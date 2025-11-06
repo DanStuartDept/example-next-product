@@ -12,20 +12,6 @@ Instructions for high-quality Next.js applications with Tailwind CSS styling and
 - Latest Next.js (App Router)
 - TypeScript for type safety
 - Tailwind CSS for styling
-- **Package Manager: pnpm** (use `pnpm` instead of npm/yarn)
-
-## Available Scripts
-
-- `pnpm dev` - Start development server with Turbopack
-- `pnpm build` - Build for production
-- `pnpm start` - Start production server
-- `pnpm lint` - Run ESLint
-- `pnpm typecheck` - Run TypeScript type checking
-- `pnpm test` - Run tests with coverage
-- `pnpm test:watch` - Run tests in watch mode
-- `pnpm test:ci` - Run tests with JUnit reporter for CI
-- `pnpm release` - Create a semantic release
-- `pnpm release:dry-run` - Test release process
 
 ## Development Standards
 
