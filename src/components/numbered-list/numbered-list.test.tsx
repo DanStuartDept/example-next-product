@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { NumberedList } from "./numbered-list";
+import { expectNoA11yViolations } from "@/lib/test-utils/accessibility";
 
 describe("NumberedList", () => {
   const mockItems = [
@@ -94,5 +95,34 @@ describe("NumberedList", () => {
     // Check that keys are stable (string items use content as key)
     const firstItem = listItems[0];
     expect(firstItem).toBeInTheDocument();
+  });
+
+  // Accessibility tests
+  describe("Accessibility", () => {
+    it("should have no accessibility violations with default props", async () => {
+      const renderResult = render(<NumberedList items={mockItems} />);
+      await expectNoA11yViolations(renderResult);
+    });
+
+    it("should have no accessibility violations with aria-label", async () => {
+      const renderResult = render(
+        <NumberedList items={mockItems} ariaLabel="List of features" />
+      );
+      await expectNoA11yViolations(renderResult);
+    });
+
+    it("should have no accessibility violations with React nodes", async () => {
+      const itemsWithNodes = [
+        "String item",
+        <span key="test">React node item</span>
+      ];
+      const renderResult = render(<NumberedList items={itemsWithNodes} />);
+      await expectNoA11yViolations(renderResult);
+    });
+
+    it("should have no accessibility violations with empty list", async () => {
+      const renderResult = render(<NumberedList items={[]} />);
+      await expectNoA11yViolations(renderResult);
+    });
   });
 }); 

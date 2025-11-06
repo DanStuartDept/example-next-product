@@ -2,6 +2,10 @@ import React from 'react';
 import { vi } from 'vitest';
 import failOnConsole from 'vitest-fail-on-console';
 import '@testing-library/jest-dom/vitest';
+import { toHaveNoViolations } from 'jest-axe';
+
+// Extend Vitest matchers with jest-axe
+expect.extend(toHaveNoViolations);
 
 failOnConsole({
   shouldFailOnDebug: false,

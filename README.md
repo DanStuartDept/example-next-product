@@ -5,10 +5,22 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 This project includes automated PR checks that run on every pull request:
 
 - **Tests**: Runs all tests with coverage reporting via Codecov
-- **Linting**: Ensures code follows ESLint rules
+- **Accessibility Tests**: Automated accessibility testing with axe-core (see [docs/ACCESSIBILITY_TESTING.md](docs/ACCESSIBILITY_TESTING.md))
+- **Linting**: Ensures code follows ESLint rules (including accessibility rules)
 - **Type Checking**: Validates TypeScript types with `tsc`
 - **Build**: Verifies the application builds successfully
 - **Performance**: Runs Unlighthouse performance checks on configured paths
+
+### Accessibility Testing
+
+This project includes comprehensive accessibility testing to ensure inclusive user experiences. We use:
+
+- **axe-core** for automated a11y testing
+- **jest-axe** for Vitest integration
+- **Storybook a11y addon** for visual accessibility checks
+- **eslint-plugin-jsx-a11y** for static code analysis
+
+For detailed information, see [docs/ACCESSIBILITY_TESTING.md](docs/ACCESSIBILITY_TESTING.md).
 
 ### Performance Testing
 
