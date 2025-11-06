@@ -12,9 +12,10 @@ const compat = new FlatCompat({
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   // Configure jsx-a11y rules to ensure accessibility standards
+  // Note: The jsx-a11y plugin is already included via Next.js's core-web-vitals preset
   {
     rules: {
-      // Enable critical a11y rules
+      // Enable critical a11y rules (override Next.js defaults from 'warn' to 'error')
       'jsx-a11y/alt-text': 'error',
       'jsx-a11y/aria-props': 'error',
       'jsx-a11y/aria-proptypes': 'error',

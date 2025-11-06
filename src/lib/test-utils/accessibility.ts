@@ -91,7 +91,7 @@ export async function expectNoA11yViolations(renderResult: RenderResult) {
  * Helper to verify a component has no accessibility violations with specific rules
  * 
  * @param renderResult - The render result from @testing-library/react
- * @param rules - Object mapping rule IDs to their enabled state
+ * @param rules - Object mapping rule IDs to their configuration (supports all axe-core rule options)
  * @returns Promise that resolves when check is complete
  * 
  * @example
@@ -110,7 +110,8 @@ export async function expectNoA11yViolations(renderResult: RenderResult) {
  */
 export async function expectNoA11yViolationsWithRules(
   renderResult: RenderResult,
-  rules: Record<string, { enabled: boolean }>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  rules: Record<string, any>
 ) {
   const results = await axe(renderResult.container, { rules });
   expect(results).toHaveNoViolations();

@@ -97,6 +97,8 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run accessibility tests
+        # Note: Runs all tests to ensure a11y tests pass alongside other tests
+        # This provides comprehensive validation and clear feedback when a11y issues occur
         run: pnpm run test -- --reporter=verbose
         continue-on-error: false
 
