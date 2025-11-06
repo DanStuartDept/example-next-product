@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: write  # For commenting coverage on PRs
+      pull-requests: write # For commenting coverage on PRs
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -29,8 +29,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version-file: '.nvmrc'
-          cache: 'pnpm'
+          node-version-file: ".nvmrc"
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -63,8 +63,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version-file: '.nvmrc'
-          cache: 'pnpm'
+          node-version-file: ".nvmrc"
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -89,8 +89,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version-file: '.nvmrc'
-          cache: 'pnpm'
+          node-version-file: ".nvmrc"
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -115,8 +115,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version-file: '.nvmrc'
-          cache: 'pnpm'
+          node-version-file: ".nvmrc"
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -134,7 +134,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: write  # For commenting performance results on PRs
+      pull-requests: write # For commenting performance results on PRs
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -147,8 +147,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version-file: '.nvmrc'
-          cache: 'pnpm'
+          node-version-file: ".nvmrc"
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -208,30 +208,30 @@ jobs:
           script: |
             const fs = require('fs');
             const path = require('path');
-            
+
             // Find Lighthouse JSON report files
             const lighthouseDir = '.lighthouseci';
             if (!fs.existsSync(lighthouseDir)) {
               console.log('No Lighthouse results found');
               return;
             }
-            
+
             const files = fs.readdirSync(lighthouseDir);
             const jsonFiles = files.filter(f => f.startsWith('lhr-') && f.endsWith('.json'));
-            
+
             if (jsonFiles.length === 0) {
               console.log('No Lighthouse JSON reports found');
               return;
             }
-            
+
             // Get artifact URL for HTML reports
             const runId = context.runId;
             const artifactUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}`;
-            
+
             let comment = '## 🚀 Lighthouse Performance Results\n\n';
             comment += '| URL | Performance | Accessibility | Best Practices | SEO | Report |\n';
             comment += '|-----|-------------|---------------|----------------|-----|--------|\n';
-            
+
             // Process each JSON report
             for (const jsonFile of jsonFiles) {
               const reportPath = path.join(lighthouseDir, jsonFile);
@@ -251,9 +251,9 @@ jobs:
               
               comment += `| ${url} | ${perf} | ${a11y} | ${bp} | ${seo} | ${reportLink} |\n`;
             }
-            
+
             comment += '\n*Download the `lighthouse-results` artifact from the workflow run to view detailed HTML reports.*';
-            
+
             await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,

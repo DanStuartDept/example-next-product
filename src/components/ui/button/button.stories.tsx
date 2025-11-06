@@ -1,31 +1,38 @@
-import type { Meta, StoryObj } from '@storybook/nextjs';
-import { Button } from './button';
+import type { Meta, StoryObj } from "@storybook/nextjs";
+import { Button } from "./button";
 
 const meta = {
-  title: 'UI/Button',
+  title: "UI/Button",
   component: Button,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     variant: {
-      control: 'select',
-      options: ['default', 'destructive', 'outline', 'secondary', 'ghost', 'link'],
-      description: 'The visual style variant of the button',
+      control: "select",
+      options: [
+        "default",
+        "destructive",
+        "outline",
+        "secondary",
+        "ghost",
+        "link",
+      ],
+      description: "The visual style variant of the button",
     },
     size: {
-      control: 'select',
-      options: ['default', 'sm', 'lg', 'icon'],
-      description: 'The size of the button',
+      control: "select",
+      options: ["default", "sm", "lg", "icon"],
+      description: "The size of the button",
     },
     disabled: {
-      control: 'boolean',
-      description: 'Whether the button is disabled',
+      control: "boolean",
+      description: "Whether the button is disabled",
     },
     asChild: {
-      control: 'boolean',
-      description: 'Render as a child component (uses Radix Slot)',
+      control: "boolean",
+      description: "Render as a child component (uses Radix Slot)",
     },
   },
 } satisfies Meta<typeof Button>;
@@ -39,7 +46,7 @@ type Story = StoryObj<typeof meta>;
  */
 export const Default: Story = {
   args: {
-    children: 'Button',
+    children: "Button",
   },
 };
 
@@ -49,8 +56,8 @@ export const Default: Story = {
  */
 export const Destructive: Story = {
   args: {
-    variant: 'destructive',
-    children: 'Delete',
+    variant: "destructive",
+    children: "Delete",
   },
 };
 
@@ -60,8 +67,8 @@ export const Destructive: Story = {
  */
 export const Outline: Story = {
   args: {
-    variant: 'outline',
-    children: 'Outline',
+    variant: "outline",
+    children: "Outline",
   },
 };
 
@@ -71,8 +78,8 @@ export const Outline: Story = {
  */
 export const Secondary: Story = {
   args: {
-    variant: 'secondary',
-    children: 'Secondary',
+    variant: "secondary",
+    children: "Secondary",
   },
 };
 
@@ -82,8 +89,8 @@ export const Secondary: Story = {
  */
 export const Ghost: Story = {
   args: {
-    variant: 'ghost',
-    children: 'Ghost',
+    variant: "ghost",
+    children: "Ghost",
   },
 };
 
@@ -93,8 +100,8 @@ export const Ghost: Story = {
  */
 export const Link: Story = {
   args: {
-    variant: 'link',
-    children: 'Link Button',
+    variant: "link",
+    children: "Link Button",
   },
 };
 
@@ -104,8 +111,8 @@ export const Link: Story = {
  */
 export const Small: Story = {
   args: {
-    size: 'sm',
-    children: 'Small Button',
+    size: "sm",
+    children: "Small Button",
   },
 };
 
@@ -115,8 +122,8 @@ export const Small: Story = {
  */
 export const Large: Story = {
   args: {
-    size: 'lg',
-    children: 'Large Button',
+    size: "lg",
+    children: "Large Button",
   },
 };
 
@@ -126,8 +133,8 @@ export const Large: Story = {
  */
 export const Icon: Story = {
   args: {
-    size: 'icon',
-    children: '🔔',
+    size: "icon",
+    children: "🔔",
   },
 };
 
@@ -138,7 +145,7 @@ export const Icon: Story = {
 export const Disabled: Story = {
   args: {
     disabled: true,
-    children: 'Disabled Button',
+    children: "Disabled Button",
   },
 };
 
@@ -214,12 +221,24 @@ export const VariantSizeMatrix: Story = {
       <div className="flex flex-col gap-2">
         <h3 className="text-sm font-semibold">Small Size</h3>
         <div className="flex flex-wrap gap-2">
-          <Button size="sm" variant="default">Default</Button>
-          <Button size="sm" variant="destructive">Destructive</Button>
-          <Button size="sm" variant="outline">Outline</Button>
-          <Button size="sm" variant="secondary">Secondary</Button>
-          <Button size="sm" variant="ghost">Ghost</Button>
-          <Button size="sm" variant="link">Link</Button>
+          <Button size="sm" variant="default">
+            Default
+          </Button>
+          <Button size="sm" variant="destructive">
+            Destructive
+          </Button>
+          <Button size="sm" variant="outline">
+            Outline
+          </Button>
+          <Button size="sm" variant="secondary">
+            Secondary
+          </Button>
+          <Button size="sm" variant="ghost">
+            Ghost
+          </Button>
+          <Button size="sm" variant="link">
+            Link
+          </Button>
         </div>
       </div>
       <div className="flex flex-col gap-2">
@@ -236,12 +255,24 @@ export const VariantSizeMatrix: Story = {
       <div className="flex flex-col gap-2">
         <h3 className="text-sm font-semibold">Large Size</h3>
         <div className="flex flex-wrap gap-2">
-          <Button size="lg" variant="default">Default</Button>
-          <Button size="lg" variant="destructive">Destructive</Button>
-          <Button size="lg" variant="outline">Outline</Button>
-          <Button size="lg" variant="secondary">Secondary</Button>
-          <Button size="lg" variant="ghost">Ghost</Button>
-          <Button size="lg" variant="link">Link</Button>
+          <Button size="lg" variant="default">
+            Default
+          </Button>
+          <Button size="lg" variant="destructive">
+            Destructive
+          </Button>
+          <Button size="lg" variant="outline">
+            Outline
+          </Button>
+          <Button size="lg" variant="secondary">
+            Secondary
+          </Button>
+          <Button size="lg" variant="ghost">
+            Ghost
+          </Button>
+          <Button size="lg" variant="link">
+            Link
+          </Button>
         </div>
       </div>
     </div>
