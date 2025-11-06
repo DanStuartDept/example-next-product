@@ -100,9 +100,8 @@ export async function expectNoA11yViolations(renderResult: RenderResult) {
  * Helper to verify a component has no accessibility violations with specific rules
  * 
  * @param renderResult - The render result from @testing-library/react
- * @param rules - Object mapping rule IDs to their configuration. Per axe-core spec, each rule
- *                must have an 'enabled' boolean property. Additional properties may be supported
- *                but are not type-checked.
+ * @param rules - Object mapping rule IDs to their configuration. Per axe-core's RuleObject type,
+ *                each rule must have an 'enabled' boolean property.
  * @returns Promise that resolves when check is complete
  * 
  * @example
