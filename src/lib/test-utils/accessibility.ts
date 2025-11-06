@@ -8,10 +8,15 @@
  */
 
 import { axe } from 'jest-axe';
+import type { RunOptions } from 'axe-core';
 import type { RenderResult } from '@testing-library/react';
 
 /**
  * Run accessibility checks on a rendered component
+ * 
+ * This is a convenience wrapper around axe() that provides consistent error handling
+ * and return type guarantees. Use this when you need direct access to the results
+ * before making assertions.
  * 
  * @param container - The container element from @testing-library/react render result
  * @returns Promise that resolves with axe test results
@@ -35,6 +40,10 @@ export async function checkA11y(container: Element) {
 
 /**
  * Run accessibility checks with custom axe configuration
+ * 
+ * This wrapper provides type-safe access to axe configuration options and ensures
+ * consistent usage across the test suite. Use this when you need to customize which
+ * rules are run or how axe behaves.
  * 
  * @param container - The container element from @testing-library/react render result
  * @param options - Custom axe configuration options
@@ -91,7 +100,9 @@ export async function expectNoA11yViolations(renderResult: RenderResult) {
  * Helper to verify a component has no accessibility violations with specific rules
  * 
  * @param renderResult - The render result from @testing-library/react
- * @param rules - Object mapping rule IDs to their configuration (supports all axe-core rule options)
+ * @param rules - Object mapping rule IDs to their configuration. Per axe-core spec, each rule
+ *                must have an 'enabled' boolean property. Additional properties may be supported
+ *                but are not type-checked.
  * @returns Promise that resolves when check is complete
  * 
  * @example
@@ -110,8 +121,7 @@ export async function expectNoA11yViolations(renderResult: RenderResult) {
  */
 export async function expectNoA11yViolationsWithRules(
   renderResult: RenderResult,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  rules: Record<string, any>
+  rules: RunOptions['rules']
 ) {
   const results = await axe(renderResult.container, { rules });
   expect(results).toHaveNoViolations();
