@@ -24,7 +24,7 @@ let geistMono: FontConfig = fallbackMono;
 if (process.env.CI !== "true") {
   try {
     // Use dynamic import for better TypeScript compatibility
-    // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const fontModule = require("next/font/google");
     const { Geist, Geist_Mono } = fontModule;
 
