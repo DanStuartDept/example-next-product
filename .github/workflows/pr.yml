@@ -198,6 +198,7 @@ jobs:
           name: lighthouse-results
           path: .lighthouseci/
           if-no-files-found: ignore
+          include-hidden-files: true
 
       - name: Comment performance summary on PR
         uses: actions/github-script@v7
@@ -208,7 +209,7 @@ jobs:
             const fs = require('fs');
             const path = require('path');
             
-            // Find the most recent manifest file
+            // Find Lighthouse JSON report files
             const lighthouseDir = '.lighthouseci';
             if (!fs.existsSync(lighthouseDir)) {
               console.log('No Lighthouse results found');
@@ -216,26 +217,23 @@ jobs:
             }
             
             const files = fs.readdirSync(lighthouseDir);
-            const manifestFiles = files.filter(f => f.startsWith('manifest') && f.endsWith('.json'));
+            const jsonFiles = files.filter(f => f.startsWith('lhr-') && f.endsWith('.json'));
             
-            if (manifestFiles.length === 0) {
-              console.log('No Lighthouse manifest found');
+            if (jsonFiles.length === 0) {
+              console.log('No Lighthouse JSON reports found');
               return;
             }
-            
-            const manifestPath = path.join(lighthouseDir, manifestFiles[0]);
-            const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
             
             let comment = '## 🚀 Lighthouse Performance Results\n\n';
             comment += '| URL | Performance | Accessibility | Best Practices | SEO |\n';
             comment += '|-----|-------------|---------------|----------------|-----|\n';
             
-            for (const result of manifest) {
-              const reportPath = path.join(lighthouseDir, result.jsonPath);
-              if (!fs.existsSync(reportPath)) continue;
-              
+            // Process each JSON report
+            for (const jsonFile of jsonFiles) {
+              const reportPath = path.join(lighthouseDir, jsonFile);
               const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
-              const url = result.url || report.finalUrl || 'Unknown';
+              
+              const url = report.finalUrl || report.requestedUrl || 'Unknown';
               const categories = report.categories || {};
               
               const perf = categories.performance ? Math.round(categories.performance.score * 100) : 'N/A';
