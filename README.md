@@ -1,5 +1,23 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## CI/CD
+
+This project includes automated PR checks that run on every pull request:
+
+- **Tests**: Runs all tests with coverage reporting via Codecov
+- **Linting**: Ensures code follows ESLint rules
+- **Type Checking**: Validates TypeScript types with `tsc`
+- **Build**: Verifies the application builds successfully
+- **Performance**: Runs Unlighthouse performance checks on configured paths
+
+### Performance Testing
+
+Performance tests are configured via `unlighthouse.config.js`. To add more paths for performance testing:
+
+1. Edit `unlighthouse.config.js`
+2. Add paths to the `urls` array
+3. Adjust performance budgets in the `ci.budget` section if needed
+
 ## Getting Started
 
 First, run the development server:

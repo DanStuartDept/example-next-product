@@ -42,5 +42,9 @@ yarn-error.log*
 next-env.d.ts
 test-results/junit.xml
 
+# storybook
 *storybook.log
 storybook-static
+
+# unlighthouse
+.unlighthouse
