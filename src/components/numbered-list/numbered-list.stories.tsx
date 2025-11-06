@@ -13,24 +13,40 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * Default story showing a numbered list with three items.
+ * This is the most common use case for the component.
+ */
 export const Default: Story = {
   args: {
     items: ['First item', 'Second item', 'Third item'],
   },
 };
 
+/**
+ * Story demonstrating the component with a single item.
+ * Useful for testing edge cases and minimal list scenarios.
+ */
 export const SingleItem: Story = {
   args: {
     items: ['Single item'],
   },
 };
 
+/**
+ * Story showing an empty list with no items.
+ * Tests how the component handles edge cases when no data is provided.
+ */
 export const EmptyList: Story = {
   args: {
     items: [],
   },
 };
 
+/**
+ * Story with a longer list of eight items.
+ * Demonstrates how the component handles multiple items and spacing.
+ */
 export const LongList: Story = {
   args: {
     items: [
@@ -46,6 +62,10 @@ export const LongList: Story = {
   },
 };
 
+/**
+ * Story demonstrating custom styling with Tailwind CSS classes.
+ * Shows how the className prop can be used to customize the appearance.
+ */
 export const WithCustomClass: Story = {
   args: {
     items: ['Styled item', 'Another styled item'],
@@ -53,6 +73,10 @@ export const WithCustomClass: Story = {
   },
 };
 
+/**
+ * Story showing accessibility features with an aria-label.
+ * Important for screen readers and assistive technologies.
+ */
 export const WithAriaLabel: Story = {
   args: {
     items: ['Feature 1', 'Feature 2', 'Feature 3'],
@@ -60,6 +84,10 @@ export const WithAriaLabel: Story = {
   },
 };
 
+/**
+ * Story demonstrating the use of React nodes as list items.
+ * Shows that the component can handle both strings and JSX elements.
+ */
 export const WithReactNodes: Story = {
   args: {
     items: [
