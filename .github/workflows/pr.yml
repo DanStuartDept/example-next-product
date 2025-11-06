@@ -1,0 +1,262 @@
+name: PR Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+# Set default permissions for all jobs
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write  # For commenting coverage on PRs
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run tests with coverage
+        run: pnpm run test
+
+      - name: Comment coverage on PR
+        uses: romeovs/lcov-reporter-action@v0.3.1
+        if: github.event_name == 'pull_request'
+        with:
+          lcov-file: ./coverage/lcov.info
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          delete-old-comments: true
+
+  lint:
+    name: Linting
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run ESLint
+        run: pnpm run lint
+
+  typecheck:
+    name: Type Check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run TypeScript compiler
+        run: pnpm run typecheck
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build application
+        run: pnpm run build
+        env:
+          # Skip telemetry during CI builds
+          NEXT_TELEMETRY_DISABLED: 1
+          # Mark as CI environment to skip font optimization
+          CI: true
+
+  performance:
+    name: Performance Check (Lighthouse CI)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write  # For commenting performance results on PRs
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build application
+        run: pnpm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+          CI: true
+
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli@0.15.x
+
+      - name: Start application
+        run: pnpm start &
+        env:
+          PORT: 3000
+
+      - name: Wait for application to be ready
+        run: |
+          echo "Waiting for application to start..."
+          timeout 60 bash -c 'until curl -f http://localhost:3000 > /dev/null 2>&1; do sleep 2; done'
+
+      - name: Run Lighthouse CI
+        run: |
+          lhci autorun || echo "Lighthouse CI completed with warnings"
+        continue-on-error: true
+
+      - name: Verify Lighthouse results
+        run: |
+          echo "Checking for Lighthouse results..."
+          if [ -d ".lighthouseci" ]; then
+            echo "✅ .lighthouseci directory exists"
+            ls -la .lighthouseci/
+          else
+            echo "❌ .lighthouseci directory not found"
+            echo "Current directory contents:"
+            ls -la
+          fi
+        continue-on-error: true
+
+      - name: Upload Lighthouse results
+        uses: actions/upload-artifact@v4
+        if: always()
+        continue-on-error: true
+        with:
+          name: lighthouse-results
+          path: .lighthouseci/
+          if-no-files-found: ignore
+          include-hidden-files: true
+
+      - name: Comment performance summary on PR
+        uses: actions/github-script@v7
+        if: github.event_name == 'pull_request' && always()
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            // Find Lighthouse JSON report files
+            const lighthouseDir = '.lighthouseci';
+            if (!fs.existsSync(lighthouseDir)) {
+              console.log('No Lighthouse results found');
+              return;
+            }
+            
+            const files = fs.readdirSync(lighthouseDir);
+            const jsonFiles = files.filter(f => f.startsWith('lhr-') && f.endsWith('.json'));
+            
+            if (jsonFiles.length === 0) {
+              console.log('No Lighthouse JSON reports found');
+              return;
+            }
+            
+            // Get artifact URL for HTML reports
+            const runId = context.runId;
+            const artifactUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}`;
+            
+            let comment = '## 🚀 Lighthouse Performance Results\n\n';
+            comment += '| URL | Performance | Accessibility | Best Practices | SEO | Report |\n';
+            comment += '|-----|-------------|---------------|----------------|-----|--------|\n';
+            
+            // Process each JSON report
+            for (const jsonFile of jsonFiles) {
+              const reportPath = path.join(lighthouseDir, jsonFile);
+              const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+              
+              const url = report.finalUrl || report.requestedUrl || 'Unknown';
+              const categories = report.categories || {};
+              
+              const perf = categories.performance ? Math.round(categories.performance.score * 100) : 'N/A';
+              const a11y = categories.accessibility ? Math.round(categories.accessibility.score * 100) : 'N/A';
+              const bp = categories['best-practices'] ? Math.round(categories['best-practices'].score * 100) : 'N/A';
+              const seo = categories.seo ? Math.round(categories.seo.score * 100) : 'N/A';
+              
+              // Link to HTML report in artifacts
+              const htmlFile = jsonFile.replace('.json', '.html');
+              const reportLink = `[📊 Details](${artifactUrl}#artifacts)`;
+              
+              comment += `| ${url} | ${perf} | ${a11y} | ${bp} | ${seo} | ${reportLink} |\n`;
+            }
+            
+            comment += '\n*Download the `lighthouse-results` artifact from the workflow run to view detailed HTML reports.*';
+            
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
