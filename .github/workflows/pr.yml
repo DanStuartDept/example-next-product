@@ -174,7 +174,20 @@ jobs:
 
       - name: Run Lighthouse CI
         run: |
-          lhci autorun --collect.url=http://localhost:3000 --collect.numberOfRuns=1 || echo "Lighthouse CI completed with warnings"
+          lhci autorun || echo "Lighthouse CI completed with warnings"
+        continue-on-error: true
+
+      - name: Verify Lighthouse results
+        run: |
+          echo "Checking for Lighthouse results..."
+          if [ -d ".lighthouseci" ]; then
+            echo "✅ .lighthouseci directory exists"
+            ls -la .lighthouseci/
+          else
+            echo "❌ .lighthouseci directory not found"
+            echo "Current directory contents:"
+            ls -la
+          fi
         continue-on-error: true
 
       - name: Upload Lighthouse results

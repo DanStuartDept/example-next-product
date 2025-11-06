@@ -5,7 +5,8 @@
       "numberOfRuns": 1,
       "settings": {
         "preset": "desktop"
-      }
+      },
+      "outputDir": ".lighthouseci"
     },
     "assert": {
       "assertions": {
