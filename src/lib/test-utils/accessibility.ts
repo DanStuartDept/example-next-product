@@ -3,13 +3,12 @@
  * 
  * This module provides utilities for automated accessibility testing using axe-core.
  * Use these helpers to ensure components meet WCAG standards.
+ * 
+ * Note: The toHaveNoViolations matcher is configured globally in vitest-setup.ts
  */
 
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { axe } from 'jest-axe';
 import type { RenderResult } from '@testing-library/react';
-
-// Extend expect with axe matchers
-expect.extend(toHaveNoViolations);
 
 /**
  * Run accessibility checks on a rendered component
