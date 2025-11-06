@@ -1,4 +1,5 @@
 import { ReactNode, memo } from "react";
+import { cn } from "@/lib/utils";
 
 /**
  * Props for the NumberedList component
@@ -58,18 +59,24 @@ export interface NumberedListProps {
  */
 export const NumberedList = memo(function NumberedList({ 
   items, 
-  className = "", 
+  className, 
   ariaLabel 
 }: NumberedListProps) {
   return (
     <ol 
-      className={`list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)] ${className}`}
+      className={cn(
+        "list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]",
+        className
+      )}
       aria-label={ariaLabel}
     >
       {items.map((item, index) => (
         <li 
           key={typeof item === 'string' ? item : `item-${index}`}
-          className={`${index < items.length - 1 ? 'mb-2' : ''} tracking-[-.01em]`}
+          className={cn(
+            "tracking-[-.01em]",
+            index < items.length - 1 && "mb-2"
+          )}
         >
           {item}
         </li>
