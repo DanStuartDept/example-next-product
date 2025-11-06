@@ -29,6 +29,7 @@ updates:
       separator: "-"
     reviewers:
       - "DanStuartDept"
+      - "copilot"
     # Allow Dependabot to rebase PRs
     rebase-strategy: "auto"
 
@@ -56,4 +57,5 @@ updates:
       separator: "-"
     reviewers:
       - "DanStuartDept"
+      - "copilot"
     rebase-strategy: "auto"
