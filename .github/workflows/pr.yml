@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   test:
-    name: Tests
+    name: Tests (includes accessibility)
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -47,7 +47,7 @@ jobs:
           delete-old-comments: true
 
   lint:
-    name: Linting
+    name: Linting (includes accessibility rules)
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -69,7 +69,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Run ESLint
+      - name: Run ESLint (includes jsx-a11y accessibility checks)
         run: pnpm run lint
 
   typecheck:
