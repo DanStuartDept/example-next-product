@@ -25,6 +25,7 @@ Commit messages must follow the Conventional Commits specification:
 ```
 
 Common types:
+
 - `feat`: A new feature
 - `fix`: A bug fix
 - `docs`: Documentation changes
@@ -34,6 +35,7 @@ Common types:
 - `chore`: Maintenance tasks
 
 Example:
+
 ```bash
 git commit -m "feat: add user authentication"
 git commit -m "fix: resolve navigation bug in mobile view"
