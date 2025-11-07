@@ -14,16 +14,19 @@ We use multiple tools and approaches to ensure accessibility:
 ## Running Accessibility Tests
 
 ### Run All Tests (including accessibility)
+
 ```bash
 pnpm test
 ```
 
 ### Run Tests in Watch Mode
+
 ```bash
 pnpm test:watch
 ```
 
 ### Run Tests with Verbose Output
+
 ```bash
 pnpm test -- --reporter=verbose
 ```
@@ -100,6 +103,7 @@ The following accessibility rules are enforced during linting:
 - `jsx-a11y/no-redundant-roles` - Prevents redundant role attributes
 
 ### Running Linting
+
 ```bash
 pnpm lint
 ```
@@ -115,6 +119,7 @@ Accessibility tests are automatically run in the CI pipeline:
 ### Build Failures
 
 The CI pipeline will fail if:
+
 - Any accessibility test fails
 - Critical ESLint accessibility rules are violated
 - WCAG violations are detected by axe-core
@@ -122,9 +127,11 @@ The CI pipeline will fail if:
 ## Best Practices
 
 ### 1. Test All Interactive Components
+
 Every interactive component (buttons, forms, modals, etc.) should have accessibility tests.
 
 ### 2. Include Multiple States
+
 Test components in all their states (open/closed, enabled/disabled, error/success).
 
 ```typescript
@@ -142,12 +149,14 @@ describe('Button Accessibility', () => {
 ```
 
 ### 3. Use Semantic HTML
+
 - Use `<button>` for buttons, not `<div onClick={...}>`
 - Use `<a>` for links
 - Use proper heading hierarchy (`<h1>`, `<h2>`, etc.)
 - Use `<label>` for form inputs
 
 ### 4. Provide ARIA Labels When Needed
+
 ```tsx
 <button aria-label="Close dialog">
   <CloseIcon />
@@ -155,10 +164,12 @@ describe('Button Accessibility', () => {
 ```
 
 ### 5. Ensure Sufficient Color Contrast
+
 - Text should have at least 4.5:1 contrast ratio with background
 - Large text can have 3:1 contrast ratio
 
 ### 6. Make Interactive Elements Keyboard Accessible
+
 - All interactive elements should be focusable
 - Custom controls should support keyboard navigation
 - Use `tabIndex` appropriately
@@ -166,6 +177,7 @@ describe('Button Accessibility', () => {
 ## Common Issues and Solutions
 
 ### Issue: Image without alt text
+
 ```tsx
 // ❌ Bad
 <img src="/logo.png" />
@@ -178,6 +190,7 @@ describe('Button Accessibility', () => {
 ```
 
 ### Issue: Missing form labels
+
 ```tsx
 // ❌ Bad
 <input type="text" />
@@ -191,6 +204,7 @@ describe('Button Accessibility', () => {
 ```
 
 ### Issue: Missing button text
+
 ```tsx
 // ❌ Bad
 <button><Icon /></button>
@@ -202,6 +216,7 @@ describe('Button Accessibility', () => {
 ```
 
 ### Issue: Improper heading hierarchy
+
 ```tsx
 // ❌ Bad
 <h1>Page Title</h1>

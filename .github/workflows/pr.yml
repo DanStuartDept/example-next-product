@@ -77,7 +77,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: write  # For commenting a11y issues on PRs
+      pull-requests: write # For commenting a11y issues on PRs
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -90,8 +90,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version-file: '.nvmrc'
-          cache: 'pnpm'
+          node-version-file: ".nvmrc"
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -111,18 +111,18 @@ jobs:
             const comment = `## ♿ Accessibility Check Failed
 
             The automated accessibility tests have detected issues that need to be addressed.
-            
+
             Please review the test failures above and fix any critical accessibility violations before merging.
-            
+
             ### Common issues to check:
             - Missing alt text on images
             - Missing ARIA labels where needed
             - Improper heading hierarchy
             - Color contrast issues
             - Missing form labels
-            
+
             Run \`pnpm test\` locally to see detailed accessibility violation reports.`;
-            
+
             await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
