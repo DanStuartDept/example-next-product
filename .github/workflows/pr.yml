@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   test:
-    name: Tests
+    name: Tests (includes accessibility)
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -47,7 +47,7 @@ jobs:
           delete-old-comments: true
 
   lint:
-    name: Linting
+    name: Linting (includes accessibility rules)
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -69,66 +69,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Run ESLint (includes accessibility checks)
+      - name: Run ESLint (includes jsx-a11y accessibility checks)
         run: pnpm run lint
-
-  accessibility:
-    name: Accessibility Tests
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write # For commenting a11y issues on PRs
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: ".nvmrc"
-          cache: "pnpm"
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Run accessibility tests
-        # Note: Runs all tests to ensure a11y tests pass alongside other tests
-        # This provides comprehensive validation and clear feedback when a11y issues occur
-        run: pnpm run test -- --reporter=verbose
-        continue-on-error: false
-
-      - name: Comment on PR about accessibility
-        uses: actions/github-script@v7
-        if: failure() && github.event_name == 'pull_request'
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const comment = `## ♿ Accessibility Check Failed
-
-            The automated accessibility tests have detected issues that need to be addressed.
-
-            Please review the test failures above and fix any critical accessibility violations before merging.
-
-            ### Common issues to check:
-            - Missing alt text on images
-            - Missing ARIA labels where needed
-            - Improper heading hierarchy
-            - Color contrast issues
-            - Missing form labels
-
-            Run \`pnpm test\` locally to see detailed accessibility violation reports.`;
-
-            await github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: comment
-            });
 
   typecheck:
     name: Type Check
