@@ -21,18 +21,18 @@ let geistSans: FontConfig = fallbackSans;
 let geistMono: FontConfig = fallbackMono;
 
 // Only load Google Fonts if not in CI environment
-if (process.env.CI !== 'true') {
+if (process.env.CI !== "true") {
   try {
     // Use dynamic import for better TypeScript compatibility
-    // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const fontModule = require("next/font/google");
     const { Geist, Geist_Mono } = fontModule;
-    
+
     geistSans = Geist({
       variable: "--font-geist-sans",
       subsets: ["latin"],
     });
-    
+
     geistMono = Geist_Mono({
       variable: "--font-geist-mono",
       subsets: ["latin"],

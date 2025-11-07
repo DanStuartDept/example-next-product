@@ -1,5 +1,46 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Code Quality
+
+This project uses [Husky](https://typicode.github.io/husky/) to enforce code quality standards before commits:
+
+### Git Hooks
+
+- **pre-commit**: Runs on staged files before each commit
+  - ESLint with auto-fix for code style and quality
+  - TypeScript type checking
+- **commit-msg**: Validates commit messages follow [Conventional Commits](https://www.conventionalcommits.org/) format
+  - Required for semantic versioning and automated releases
+
+### Commit Message Format
+
+Commit messages must follow the Conventional Commits specification:
+
+```
+<type>: <description>
+
+[optional body]
+
+[optional footer]
+```
+
+Common types:
+
+- `feat`: A new feature
+- `fix`: A bug fix
+- `docs`: Documentation changes
+- `style`: Code style changes (formatting, missing semi-colons, etc.)
+- `refactor`: Code refactoring
+- `test`: Adding or updating tests
+- `chore`: Maintenance tasks
+
+Example:
+
+```bash
+git commit -m "feat: add user authentication"
+git commit -m "fix: resolve navigation bug in mobile view"
+```
+
 ## CI/CD
 
 This project includes automated PR checks that run on every pull request:
