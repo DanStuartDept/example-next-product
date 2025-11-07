@@ -64,13 +64,19 @@ export const NumberedList = memo(function NumberedList({
 }: NumberedListProps) {
   return (
     <ol
-      className={`list-inside list-decimal text-center font-(family-name:--font-geist-mono) text-sm/6 sm:text-left ${className}`}
+      className={cn(
+        "list-inside list-decimal text-center font-[family-name:var(--font-geist-mono)] text-sm/6 sm:text-left",
+        className
+      )}
       aria-label={ariaLabel}
     >
       {items.map((item, index) => (
         <li
           key={typeof item === "string" ? item : `item-${index}`}
-          className={`${index < items.length - 1 ? "mb-2" : ""} tracking-[-.01em]`}
+          className={cn(
+            "tracking-[-.01em]",
+            index < items.length - 1 && "mb-2"
+          )}
         >
           {item}
         </li>
