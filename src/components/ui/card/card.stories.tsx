@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
-import { Card } from "./card";
+import { ProductCard } from "./card";
 
 const meta = {
   title: "UI/Card",
-  component: Card,
+  component: ProductCard,
   parameters: {
     layout: "centered",
   },
@@ -28,7 +28,7 @@ const meta = {
       description: "Position of the image relative to content",
     },
   },
-} satisfies Meta<typeof Card>;
+} satisfies Meta<typeof ProductCard>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -194,12 +194,12 @@ export const GridLayout: Story = {
   },
   render: () => (
     <div className="grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-      <Card
+      <ProductCard
         title="First Card"
         description="This is the first card in the grid."
         cta={{ text: "View", href: "#" }}
       />
-      <Card
+      <ProductCard
         title="Second Card"
         description="This is the second card with an image."
         image={{
@@ -207,12 +207,12 @@ export const GridLayout: Story = {
           alt: "Mountain",
         }}
       />
-      <Card
+      <ProductCard
         title="Third Card"
         description="This is the third card with action."
         cta={{ text: "Action", onClick: () => alert("Clicked!") }}
       />
-      <Card
+      <ProductCard
         title="Fourth Card"
         titleHeadingLevel="h3"
         description="This card has everything."
@@ -222,7 +222,7 @@ export const GridLayout: Story = {
         }}
         cta={{ text: "Discover", href: "https://example.com" }}
       />
-      <Card
+      <ProductCard
         title="Fifth Card"
         description="Image at the bottom this time."
         image={{
@@ -231,7 +231,7 @@ export const GridLayout: Story = {
         }}
         imagePosition="bottom"
       />
-      <Card
+      <ProductCard
         title="Sixth Card"
         description="Simple card to complete the grid."
       />
@@ -250,17 +250,17 @@ export const HeadingLevels: Story = {
   },
   render: () => (
     <div className="flex max-w-5xl flex-col gap-6 md:flex-row">
-      <Card
+      <ProductCard
         title="H2 Heading"
         titleHeadingLevel="h2"
         description="This card uses an h2 heading (default)."
       />
-      <Card
+      <ProductCard
         title="H3 Heading"
         titleHeadingLevel="h3"
         description="This card uses an h3 heading."
       />
-      <Card
+      <ProductCard
         title="H4 Heading"
         titleHeadingLevel="h4"
         description="This card uses an h4 heading."
@@ -280,7 +280,7 @@ export const ImagePositions: Story = {
   },
   render: () => (
     <div className="flex max-w-5xl flex-col gap-6 md:flex-row">
-      <Card
+      <ProductCard
         title="Image on Top"
         description="The image appears above the content."
         image={{
@@ -289,7 +289,7 @@ export const ImagePositions: Story = {
         }}
         imagePosition="top"
       />
-      <Card
+      <ProductCard
         title="Image on Bottom"
         description="The image appears below the content."
         image={{

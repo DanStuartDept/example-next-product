@@ -4,26 +4,31 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import {
+  Card as CardPrimitive,
+  CardHeader,
+  CardTitle as CardTitlePrimitive,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "./card-primitives";
 
-const cardVariants = cva(
-  "rounded-lg border bg-card text-card-foreground shadow-sm transition-shadow hover:shadow-md",
-  {
-    variants: {
-      imagePosition: {
-        top: "flex flex-col",
-        bottom: "flex flex-col-reverse",
-        none: "flex flex-col",
-      },
+const productCardVariants = cva("transition-shadow hover:shadow-md", {
+  variants: {
+    imagePosition: {
+      top: "flex flex-col",
+      bottom: "flex flex-col-reverse",
+      none: "flex flex-col",
     },
-    defaultVariants: {
-      imagePosition: "none",
-    },
-  }
-);
+  },
+  defaultVariants: {
+    imagePosition: "none",
+  },
+});
 
-export interface CardProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof cardVariants> {
+export interface ProductCardProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "title">,
+    VariantProps<typeof productCardVariants> {
   /** The title text to display */
   title: string;
   /** The heading level for the title (h2, h3, or h4) */
@@ -45,7 +50,7 @@ export interface CardProps
   };
 }
 
-const Card = React.forwardRef<HTMLDivElement, CardProps>(
+const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
   (
     {
       className,
@@ -59,7 +64,6 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
     },
     ref
   ) => {
-    const HeadingTag = titleHeadingLevel;
     // Determine image position: default to 'top' if image provided, otherwise 'none'
     const effectiveImagePosition = imagePosition ?? (image ? "top" : "none");
     // Helper to check if URL is external
@@ -68,11 +72,16 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       url.startsWith("https://") ||
       url.startsWith("//");
 
+    const HeadingTag = titleHeadingLevel;
+
     return (
-      <div
+      <CardPrimitive
         ref={ref}
         className={cn(
-          cardVariants({ imagePosition: effectiveImagePosition, className })
+          productCardVariants({
+            imagePosition: effectiveImagePosition,
+            className,
+          })
         )}
         {...props}
       >
@@ -92,37 +101,46 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
             />
           </div>
         )}
-        <div className="flex flex-col gap-4 p-6">
-          <HeadingTag className="text-xl leading-tight font-semibold tracking-tight">
+        <CardHeader>
+          <HeadingTag className="text-xl leading-none font-semibold tracking-tight">
             {title}
           </HeadingTag>
-          <p className="text-muted-foreground text-sm">{description}</p>
-          {cta && (
-            <div className="mt-2">
-              {cta.href ? (
-                <Button asChild>
-                  <a
-                    href={cta.href}
-                    target={isExternalUrl(cta.href) ? "_blank" : undefined}
-                    rel={
-                      isExternalUrl(cta.href)
-                        ? "noopener noreferrer"
-                        : undefined
-                    }
-                  >
-                    {cta.text}
-                  </a>
-                </Button>
-              ) : (
-                <Button onClick={cta.onClick}>{cta.text}</Button>
-              )}
-            </div>
-          )}
-        </div>
-      </div>
+          <CardDescription>{description}</CardDescription>
+        </CardHeader>
+        {cta && (
+          <CardFooter>
+            {cta.href ? (
+              <Button asChild>
+                <a
+                  href={cta.href}
+                  target={isExternalUrl(cta.href) ? "_blank" : undefined}
+                  rel={
+                    isExternalUrl(cta.href) ? "noopener noreferrer" : undefined
+                  }
+                >
+                  {cta.text}
+                </a>
+              </Button>
+            ) : (
+              <Button onClick={cta.onClick}>{cta.text}</Button>
+            )}
+          </CardFooter>
+        )}
+      </CardPrimitive>
     );
   }
 );
-Card.displayName = "Card";
+ProductCard.displayName = "ProductCard";
 
-export { Card, cardVariants };
+// Export shadcn primitives for direct use
+export {
+  CardPrimitive as Card,
+  CardHeader,
+  CardFooter,
+  CardTitlePrimitive as CardTitle,
+  CardDescription,
+  CardContent,
+};
+
+// Export custom product card
+export { ProductCard, productCardVariants };

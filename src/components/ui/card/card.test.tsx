@@ -1,41 +1,41 @@
 import React from "react";
 import { vi } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { Card } from "./card";
+import { ProductCard } from "./card";
 import { expectNoA11yViolations } from "@/lib/test-utils/accessibility";
 
-describe("Card", () => {
+describe("ProductCard", () => {
   const defaultProps = {
     title: "Card Title",
     description: "This is a card description",
   };
 
   it("renders with required props", () => {
-    render(<Card {...defaultProps} />);
+    render(<ProductCard {...defaultProps} />);
     expect(screen.getByText("Card Title")).toBeInTheDocument();
     expect(screen.getByText("This is a card description")).toBeInTheDocument();
   });
 
   it("renders with h2 heading by default", () => {
-    render(<Card {...defaultProps} />);
+    render(<ProductCard {...defaultProps} />);
     const heading = screen.getByRole("heading", { name: /card title/i });
     expect(heading.tagName).toBe("H2");
   });
 
   it("renders with h3 heading when specified", () => {
-    render(<Card {...defaultProps} titleHeadingLevel="h3" />);
+    render(<ProductCard {...defaultProps} titleHeadingLevel="h3" />);
     const heading = screen.getByRole("heading", { name: /card title/i });
     expect(heading.tagName).toBe("H3");
   });
 
   it("renders with h4 heading when specified", () => {
-    render(<Card {...defaultProps} titleHeadingLevel="h4" />);
+    render(<ProductCard {...defaultProps} titleHeadingLevel="h4" />);
     const heading = screen.getByRole("heading", { name: /card title/i });
     expect(heading.tagName).toBe("H4");
   });
 
   it("renders without CTA when not provided", () => {
-    render(<Card {...defaultProps} />);
+    render(<ProductCard {...defaultProps} />);
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
     expect(screen.queryByRole("link")).not.toBeInTheDocument();
   });
@@ -43,7 +43,7 @@ describe("Card", () => {
   it("renders CTA button with onClick handler", () => {
     const handleClick = vi.fn();
     render(
-      <Card
+      <ProductCard
         {...defaultProps}
         cta={{ text: "Click me", onClick: handleClick }}
       />
@@ -56,7 +56,10 @@ describe("Card", () => {
 
   it("renders CTA as link with href", () => {
     render(
-      <Card {...defaultProps} cta={{ text: "Learn more", href: "/about" }} />
+      <ProductCard
+        {...defaultProps}
+        cta={{ text: "Learn more", href: "/about" }}
+      />
     );
     const link = screen.getByRole("link", { name: /learn more/i });
     expect(link).toBeInTheDocument();
@@ -65,7 +68,7 @@ describe("Card", () => {
 
   it("renders external link with target and rel attributes", () => {
     render(
-      <Card
+      <ProductCard
         {...defaultProps}
         cta={{ text: "External link", href: "https://example.com" }}
       />
@@ -77,7 +80,10 @@ describe("Card", () => {
 
   it("renders internal link without target and rel attributes", () => {
     render(
-      <Card {...defaultProps} cta={{ text: "Internal link", href: "/page" }} />
+      <ProductCard
+        {...defaultProps}
+        cta={{ text: "Internal link", href: "/page" }}
+      />
     );
     const link = screen.getByRole("link", { name: /internal link/i });
     expect(link).not.toHaveAttribute("target");
@@ -86,7 +92,7 @@ describe("Card", () => {
 
   it("renders protocol-relative URL with target and rel attributes", () => {
     render(
-      <Card
+      <ProductCard
         {...defaultProps}
         cta={{ text: "Protocol relative", href: "//example.com" }}
       />
@@ -97,14 +103,17 @@ describe("Card", () => {
   });
 
   it("renders without image when not provided", () => {
-    const { container } = render(<Card {...defaultProps} />);
+    const { container } = render(<ProductCard {...defaultProps} />);
     const images = container.querySelectorAll("img");
     expect(images).toHaveLength(0);
   });
 
   it("renders with image when provided", () => {
     render(
-      <Card {...defaultProps} image={{ src: "/test.jpg", alt: "Test image" }} />
+      <ProductCard
+        {...defaultProps}
+        image={{ src: "/test.jpg", alt: "Test image" }}
+      />
     );
     const img = screen.getByRole("img", { name: /test image/i });
     expect(img).toBeInTheDocument();
@@ -112,7 +121,7 @@ describe("Card", () => {
 
   it("renders image with custom dimensions", () => {
     render(
-      <Card
+      <ProductCard
         {...defaultProps}
         image={{ src: "/test.jpg", alt: "Test image", width: 800, height: 600 }}
       />
@@ -123,7 +132,7 @@ describe("Card", () => {
 
   it("applies imagePosition variant correctly for top", () => {
     const { container } = render(
-      <Card
+      <ProductCard
         {...defaultProps}
         image={{ src: "/test.jpg", alt: "Test image" }}
         imagePosition="top"
@@ -135,7 +144,7 @@ describe("Card", () => {
 
   it("applies imagePosition variant correctly for bottom", () => {
     const { container } = render(
-      <Card
+      <ProductCard
         {...defaultProps}
         image={{ src: "/test.jpg", alt: "Test image" }}
         imagePosition="bottom"
@@ -147,7 +156,7 @@ describe("Card", () => {
 
   it("applies custom className", () => {
     const { container } = render(
-      <Card {...defaultProps} className="custom-class" />
+      <ProductCard {...defaultProps} className="custom-class" />
     );
     const card = container.firstChild as HTMLElement;
     expect(card).toHaveClass("custom-class");
@@ -155,14 +164,14 @@ describe("Card", () => {
 
   it("forwards ref correctly", () => {
     const ref = React.createRef<HTMLDivElement>();
-    render(<Card {...defaultProps} ref={ref} />);
+    render(<ProductCard {...defaultProps} ref={ref} />);
     expect(ref.current).toBeInstanceOf(HTMLDivElement);
   });
 
   it("renders complete card with all features", () => {
     const handleClick = vi.fn();
     render(
-      <Card
+      <ProductCard
         {...defaultProps}
         titleHeadingLevel="h3"
         image={{ src: "/test.jpg", alt: "Test image" }}
@@ -184,14 +193,14 @@ describe("Card", () => {
   // Accessibility tests
   describe("Accessibility", () => {
     it("should have no accessibility violations with default props", async () => {
-      const renderResult = render(<Card {...defaultProps} />);
+      const renderResult = render(<ProductCard {...defaultProps} />);
       await expectNoA11yViolations(renderResult);
     });
 
     it("should have no accessibility violations with CTA button", async () => {
       const handleClick = vi.fn();
       const renderResult = render(
-        <Card
+        <ProductCard
           {...defaultProps}
           cta={{ text: "Click me", onClick: handleClick }}
         />
@@ -201,14 +210,17 @@ describe("Card", () => {
 
     it("should have no accessibility violations with CTA link", async () => {
       const renderResult = render(
-        <Card {...defaultProps} cta={{ text: "Learn more", href: "/about" }} />
+        <ProductCard
+          {...defaultProps}
+          cta={{ text: "Learn more", href: "/about" }}
+        />
       );
       await expectNoA11yViolations(renderResult);
     });
 
     it("should have no accessibility violations with image", async () => {
       const renderResult = render(
-        <Card
+        <ProductCard
           {...defaultProps}
           image={{ src: "/test.jpg", alt: "Test image" }}
         />
@@ -219,7 +231,7 @@ describe("Card", () => {
     it("should have no accessibility violations with all features", async () => {
       const handleClick = vi.fn();
       const renderResult = render(
-        <Card
+        <ProductCard
           {...defaultProps}
           titleHeadingLevel="h3"
           image={{ src: "/test.jpg", alt: "Test image" }}
