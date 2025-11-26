@@ -84,6 +84,18 @@ describe("Card", () => {
     expect(link).not.toHaveAttribute("rel");
   });
 
+  it("renders protocol-relative URL with target and rel attributes", () => {
+    render(
+      <Card
+        {...defaultProps}
+        cta={{ text: "Protocol relative", href: "//example.com" }}
+      />
+    );
+    const link = screen.getByRole("link", { name: /protocol relative/i });
+    expect(link).toHaveAttribute("target", "_blank");
+    expect(link).toHaveAttribute("rel", "noopener noreferrer");
+  });
+
   it("renders without image when not provided", () => {
     const { container } = render(<Card {...defaultProps} />);
     const images = container.querySelectorAll("img");

@@ -54,21 +54,35 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       description,
       cta,
       image,
-      imagePosition = image ? "top" : "none",
+      imagePosition,
       ...props
     },
     ref
   ) => {
     const HeadingTag = titleHeadingLevel;
+    // Determine image position: default to 'top' if image provided, otherwise 'none'
+    const effectiveImagePosition = imagePosition ?? (image ? "top" : "none");
+    // Helper to check if URL is external
+    const isExternalUrl = (url: string) =>
+      url.startsWith("http://") ||
+      url.startsWith("https://") ||
+      url.startsWith("//");
 
     return (
       <div
         ref={ref}
-        className={cn(cardVariants({ imagePosition, className }))}
+        className={cn(
+          cardVariants({ imagePosition: effectiveImagePosition, className })
+        )}
         {...props}
       >
-        {image && (
-          <div className="relative w-full overflow-hidden rounded-t-lg">
+        {image && effectiveImagePosition !== "none" && (
+          <div
+            className={cn(
+              "relative w-full overflow-hidden",
+              effectiveImagePosition === "top" ? "rounded-t-lg" : "rounded-b-lg"
+            )}
+          >
             <Image
               src={image.src}
               alt={image.alt}
@@ -89,9 +103,9 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
                 <Button asChild>
                   <a
                     href={cta.href}
-                    target={cta.href.startsWith("http") ? "_blank" : undefined}
+                    target={isExternalUrl(cta.href) ? "_blank" : undefined}
                     rel={
-                      cta.href.startsWith("http")
+                      isExternalUrl(cta.href)
                         ? "noopener noreferrer"
                         : undefined
                     }
