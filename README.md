@@ -52,6 +52,36 @@ This project includes automated PR checks that run on every pull request:
 - **Build**: Verifies the application builds successfully
 - **Performance**: Runs Unlighthouse performance checks on configured paths
 
+### Automated Releases
+
+This project uses [semantic-release](https://semantic-release.gitbook.io/) for automated version management and package publishing. Releases are triggered automatically when commits are pushed to the `main` branch.
+
+#### Release Process
+
+1. **Commit with Conventional Commits**: Follow the commit message format (see above)
+2. **Merge to main**: When your PR is merged, semantic-release analyzes commits
+3. **Automated release**: If commits warrant a release, semantic-release will:
+   - Determine the next version number based on commit types
+   - Generate/update the CHANGELOG.md file
+   - Create a Git tag
+   - Create a GitHub release with release notes
+   - Update the version in package.json
+
+#### Version Bumping
+
+- `feat:` commits trigger a **minor** version bump (e.g., 1.0.0 → 1.1.0)
+- `fix:` commits trigger a **patch** version bump (e.g., 1.0.0 → 1.0.1)
+- Commits with `BREAKING CHANGE:` in the footer trigger a **major** version bump (e.g., 1.0.0 → 2.0.0)
+- Other commit types (docs, chore, style, refactor, test) don't trigger a release
+
+#### Testing Releases Locally
+
+To test what the next release would look like without actually publishing:
+
+```bash
+pnpm run release:dry-run
+```
+
 ### Accessibility Testing
 
 This project includes comprehensive accessibility testing to ensure inclusive user experiences. We use:
