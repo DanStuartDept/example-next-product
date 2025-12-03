@@ -9,6 +9,7 @@ permissions:
   contents: write # To push commits and tags
   issues: write # To comment on released issues
   pull-requests: write # To comment on merged PRs
+  packages: write # To publish packages to GitHub Packages
 
 jobs:
   release:
@@ -30,6 +31,8 @@ jobs:
         with:
           node-version-file: ".nvmrc"
           cache: "pnpm"
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@DanStuartDept"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -37,4 +40,5 @@ jobs:
       - name: Run semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: pnpm run release
