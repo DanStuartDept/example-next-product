@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/DanStuartDept/example-next-product/compare/v1.0.0...v1.0.1) (2026-01-08)
+
+
+### Bug Fixes
+
+* resolve Prettier formatting error in button component ([db61fb5](https://github.com/DanStuartDept/example-next-product/commit/db61fb56d62ea11b58d34c3717ed959865e0e140))
+
 # 1.0.0 (2025-12-03)
 
 
