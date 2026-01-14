@@ -1,3 +1,5 @@
+import nextCoreWebVitals from "eslint-config-next/core-web-vitals";
+import nextTypescript from "eslint-config-next/typescript";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { FlatCompat } from "@eslint/eslintrc";
@@ -10,11 +12,9 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  ...compat.extends(
-    "next/core-web-vitals",
-    "next/typescript",
-    "plugin:prettier/recommended"
-  ),
+  ...nextCoreWebVitals,
+  ...nextTypescript,
+  ...compat.extends("plugin:prettier/recommended"),
   // Configure jsx-a11y rules to ensure accessibility standards
   // Note: The jsx-a11y plugin is already included via Next.js's core-web-vitals preset
   {
@@ -34,6 +34,15 @@ const eslintConfig = [
       "jsx-a11y/no-autofocus": "warn",
       "jsx-a11y/no-redundant-roles": "error",
     },
+  },
+  {
+    ignores: [
+      "node_modules/**",
+      ".next/**",
+      "out/**",
+      "build/**",
+      "next-env.d.ts",
+    ],
   },
 ];
 

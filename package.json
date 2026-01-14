@@ -9,7 +9,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit",
@@ -27,16 +28,15 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.562.0",
-    "next": "15.5.6",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3",
+    "next": "16.1.1",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
     "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
     "@axe-core/react": "^4.11.0",
-    "@commitlint/cli": "^20.3.0",
-    "@commitlint/config-conventional": "^20.3.0",
-    "@eslint/eslintrc": "^3.3.3",
+    "@commitlint/cli": "^20.3.1",
+    "@commitlint/config-conventional": "^20.3.1",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^12.0.2",
@@ -49,14 +49,14 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.1",
     "@types/node": "^25.0.3",
-    "@types/react": "^19.2.7",
-    "@types/react-dom": "^19.2.3",
+    "@types/react": "19.2.8",
+    "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "^5.1.2",
     "@vitest/coverage-v8": "^4.0.16",
     "@vitest/expect": "^4.0.16",
     "axe-core": "^4.11.1",
     "eslint": "^9.39.2",
-    "eslint-config-next": "15.5.6",
+    "eslint-config-next": "16.1.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-jest-dom": "^5.5.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
@@ -81,5 +81,11 @@
       "prettier --write",
       "eslint --fix"
     ]
+  },
+  "pnpm": {
+    "overrides": {
+      "@types/react": "19.2.8",
+      "@types/react-dom": "19.2.3"
+    }
   }
 }
