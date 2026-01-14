@@ -46,9 +46,6 @@ importers:
       '@commitlint/config-conventional':
         specifier: ^20.3.1
         version: 20.3.1
-      '@eslint/eslintrc':
-        specifier: ^3.3.3
-        version: 3.3.3
       '@semantic-release/changelog':
         specifier: ^6.0.3
         version: 6.0.3(semantic-release@25.0.2(typescript@5.9.3))
